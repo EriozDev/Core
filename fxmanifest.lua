@@ -6,6 +6,7 @@ description 'Core'
 version '1.0'
 
 shared_scripts {
+    'shared/config.lua',
     'shared/libs/class.lua',
     'shared/libs/thread.lua',
     'shared/libs/logger.lua',
