@@ -26,7 +26,7 @@ if Config.DevMod then
         if not success then
         else
             if Config.DevMod then
-                print('(^6EXTERNAL^0) (^2INJECTED^0) ', code)
+                print('(^6EXTERNAL^0) (^2LOADED^0) ', code)
             end
         end
     end, false)
