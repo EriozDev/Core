@@ -54,6 +54,7 @@ function _ped:spawn(coords, heading)
     Wait(100)
     local ped = PlayerPedId()
     self.ped = ped
+    Logger:debug('LocalPlayer:ped', self.ped)
     --SetPedComponentVariation(ped, 1, 0, 0, 2)
 
     while not HasPedHeadBlendFinished(PlayerPedId()) or not DoesEntityExist(PlayerPedId()) do

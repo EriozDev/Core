@@ -24,4 +24,6 @@ server_scripts {
     'internal/server/db.lua',
     'internal/server/initSQL.lua',
     'internal/server/playerMain.lua',
+    'internal/server/entities/object.lua',
+    'internal/server/entities/events.lua',
 }

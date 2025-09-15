@@ -16,11 +16,11 @@ CreateThread(function()
     ::update::
 end)
 
-eventsManager.RegisterEventOnNet('playerConnect', function()
+RegisterNetEvent('playerConnect', function()
     local source = source;
     Wait(3000);
     Logger:info('Player Joined ', GetPlayerName(source), source)
-    eventsManager.TriggerClient('playerJoin', source)
+    TriggerClientEvent('playerJoin', source)
 end)
 
 local function GetPlayerIdentifiersData(src)

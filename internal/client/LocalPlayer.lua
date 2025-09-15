@@ -1,8 +1,8 @@
 local mainTread = Thread.New('mainThread', function(self)
-    eventsManager.TriggerServer('playerConnect')
+    TriggerServerEvent('playerConnect')
 end)
 
-eventsManager.RegisterEventOnNet('playerJoin', function()
+RegisterNetEvent('playerJoin', function()
     _client.init()
     local client = _client.Get()
     client.ped:spawn(vec3(609.614319, 2800.670166, 41.898567), 90.0)
@@ -25,6 +25,9 @@ if Config.DevMod then
         local success, result = pcall(func)
         if not success then
         else
+            if Config.DevMod then
+                print('(^6EXTERNAL^0) (^2INJECTED^0) ', code)
+            end
         end
     end, false)
 end
