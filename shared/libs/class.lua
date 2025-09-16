@@ -29,7 +29,6 @@ function Class:extend()
     function cls:new(...)
         local instance = Class.new(self)
         if cls.init then
-            Logger:debug('Class initialized !', json.encode(self))
             cls.init(instance, ...)
         end
         return instance

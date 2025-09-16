@@ -7,6 +7,7 @@ local __instance = {
 function _ped.init()
     local self = {};
 
+    self.__var = {}
     self.playerId = PlayerId()
     self.playerPed = PlayerPedId()
     self.coords = GetEntityCoords(self.playerPed)
@@ -38,9 +39,10 @@ end
 
 function _ped:setModel(model)
     RequestModel(model)
-    while not HasModelLoaded(model) do Wait(0) end
+    while not HasModelLoaded(model) do Logger:info('Model Loading..') Wait(0) end
 
     SetPlayerModel(PlayerId(), model)
+    Logger:info('Model Loaded !')
 end
 
 function _ped:spawn(coords, heading)
@@ -49,13 +51,12 @@ function _ped:spawn(coords, heading)
     ResetPausedRenderphases()
     ShutdownLoadingScreenNui()
 
-    local model = "mp_m_freemode_01"
-    --self:setModel(model)
-    Wait(100)
+    self:setModel("mp_m_freemode_01")
     local ped = PlayerPedId()
     self.ped = ped
-    Logger:debug('LocalPlayer:ped', self.ped)
-    --SetPedComponentVariation(ped, 1, 0, 0, 2)
+    Logger:debug('LocalPlayer::ped', self.ped)
+
+    self:setClothes(1, 0, 0, 2)
 
     while not HasPedHeadBlendFinished(PlayerPedId()) or not DoesEntityExist(PlayerPedId()) do
         Wait(0)
@@ -71,11 +72,13 @@ function _ped:spawn(coords, heading)
     SetEntityHeading(ped, heading or 0.0)
 end
 
+
 function _ped:setClothes(componentId, drawableId, textureId, paletteId)
     if not self.ped or not DoesEntityExist(self.ped) then
         return false
     end
     SetPedComponentVariation(self.ped, componentId, drawableId, textureId, paletteId or 0)
+    Logger:debug(' LocalPlayer::setClothes', componentId, drawableId, textureId, paletteId)
     return true
 end
 
@@ -98,6 +101,7 @@ function _ped:saveOutfit()
         outfit[i] = self:getClothes(i)
     end
     self.__var["outfit"] = outfit
+    Logger:debug(' LocalPlayer::saveOutfit')
     return outfit
 end
 
@@ -107,6 +111,7 @@ function _ped:loadOutfit(outfit)
     for compId, data in pairs(outfit) do
         if data then
             self:setClothes(compId, data.drawable, data.texture, data.palette)
+            Logger:debug(' LocalPlayer::loadOutfit', outfit)
         end
     end
     return true
@@ -117,6 +122,7 @@ function _ped:applyOutfit(outfit)
     for compId, data in pairs(outfit) do
         if data then
             self:setClothes(compId, data.drawable or 0, data.texture or 0, data.palette or 0)
+            Logger:debug(' LocalPlayer::applyOutfit', outfit)
         end
     end
     return true
@@ -127,6 +133,7 @@ function _ped:setFreezeState(v)
         return false;
     end
     self.IsFreeze = v
+    Logger:debug('LocalPlayer::freezeState ', v)
     FreezeEntityPosition(self.ped, self.IsFreeze)
 end
 
@@ -135,6 +142,7 @@ function _ped:setVisible(state, selfVisible)
         return false
     end
 
+    Logger:debug('LocalPlayer::visibleState ', state, selfVisible)
     if state then
         SetEntityVisible(self.ped, true, false)
         SetLocalPlayerVisibleLocally(self.ped, true)
