@@ -1,26 +1,39 @@
-local CORE_STARTED = false
 CreateThread(function()
-    local attempt = 0
-
-    while not CORE_STARTED do
-        Wait(1000)
-        attempt = attempt + 1
-        Logger:warn('ERZ FrameWork Starting... Don\'t stop the server !')
-        if attempt > 3 then
-            CORE_STARTED = true
-            Logger:info('Core Started!')
-            goto update
-        end
-    end
-
-    ::update::
+    Core.SetCoreState(true)
+    Logger:info('Core Started!')
+    Logger:info('Creators: ', table.unpack(Config.Credit))
 end)
 
 RegisterNetEvent('playerConnect', function()
     local source = source;
-    Wait(3000);
-    Logger:info('Player Joined ', GetPlayerName(source), source)
+    player.new(source)
     TriggerClientEvent('playerJoin', source)
+    Logger:info('Player Joined ', GetPlayerName(source), source)
+end)
+
+local database = DB:new('Core')
+
+RegisterServerCallback('getSavedPosition', function(src)
+    local license = GetPlayerIdentifierByType(src, 'license')
+    local result = database:select('users_character', 'license = ?', { license })
+
+    if result[1] and result[1].position then
+        local posData = json.decode(result[1].position)
+        return posData
+    end
+
+    return { x = 609.614319, y = 2800.670166, z = 41.898567, heading = 90.0 }
+end)
+
+AddEventHandler('playerDropped', function(_REASON)
+    local source = source;
+    local player = player.Get(source);
+    if (not player) then
+        return false;
+    end
+
+    player:save()
+    player:destroy()
 end)
 
 local function GetPlayerIdentifiersData(src)
@@ -36,12 +49,18 @@ local function GetPlayerIdentifiersData(src)
     }
 
     for _, id in pairs(GetPlayerIdentifiers(src)) do
-        if id:find("license:") then identifiers.license = id
-        elseif id:find("steam:") then identifiers.steam = id
-        elseif id:find("fivem:") then identifiers.fivem = id
-        elseif id:find("discord:") then identifiers.discord = id
-        elseif id:find("xbl:") then identifiers.xbox = id
-        elseif id:find("live:") then identifiers.live = id
+        if id:find("license:") then
+            identifiers.license = id
+        elseif id:find("steam:") then
+            identifiers.steam = id
+        elseif id:find("fivem:") then
+            identifiers.fivem = id
+        elseif id:find("discord:") then
+            identifiers.discord = id
+        elseif id:find("xbl:") then
+            identifiers.xbox = id
+        elseif id:find("live:") then
+            identifiers.live = id
         end
     end
 
@@ -84,3 +103,21 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
 
     deferrals.done()
 end)
+
+RegisterCommand('playerlist', function(src, args)
+    local players = player.GetPlayers()
+    for _, p in pairs(players) do
+        print(p.name)
+    end
+end)
+
+AddEventHandler('onResourceStop', function(_RESOURCE)
+    if _RESOURCE == 'Core' then
+        local players = player.GetPlayers()
+        for _, p in pairs(players) do
+            p:save()
+        end
+    end
+end)
+
+

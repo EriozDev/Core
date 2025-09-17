@@ -1,15 +1,40 @@
 Logger = Class:extend()
 
+local pendingLogs = {}
+
+local function flushLogs()
+    for _, log in ipairs(pendingLogs) do
+        print(log)
+    end
+    pendingLogs = {}
+end
+
 function Logger:debug(...)
-    return print('(^2debug^0) ', ...)
+    local msg = '(^2debug^0) ' .. table.concat({...}, " ")
+    if CORE_STARTED then
+        print(msg)
+    else
+        table.insert(pendingLogs, msg)
+    end
 end
 
 function Logger:info(...)
-    return print('(^5info^0) ', ...)
+    local msg = '(^5info^0) ' .. table.concat({...}, " ")
+    if CORE_STARTED then
+        print(msg)
+    else
+        table.insert(pendingLogs, msg)
+    end
 end
 
 function Logger:warn(...)
-    return print('(^3warn^0) ', ...)
+    local msg = '(^3warn^0) ' .. table.concat({...}, " ")
+    print(msg)
 end
 
-return Logger;
+CreateThread(function()
+    while not CORE_STARTED do Wait(100) end
+    flushLogs()
+end)
+
+return Logger

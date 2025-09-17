@@ -1,11 +1,15 @@
+local eventsManager = eventsManager.GetMetaTable()
 local mainTread = Thread.New('mainThread', function(self)
-    TriggerServerEvent('playerConnect')
+    eventsManager:toServer('playerConnect')
 end)
 
 RegisterNetEvent('playerJoin', function()
     _client.init()
     local client = _client.Get()
-    client.ped:spawn(vec3(609.614319, 2800.670166, 41.898567), 90.0)
+
+    TriggerServerCallback('getSavedPosition', function(pos)
+        client.ped:spawn(vec3(pos.x, pos.y, pos.z), pos.heading)
+    end)
 end)
 
 if Config.DevMod then

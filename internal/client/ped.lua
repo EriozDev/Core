@@ -45,6 +45,13 @@ function _ped:setModel(model)
     Logger:info('Model Loaded !')
 end
 
+function _ped:startGame()
+    local modules = Resources.GetList()
+    for i = 1, #modules do
+        modules[i]:start()
+    end
+end
+
 function _ped:spawn(coords, heading)
     Wait(0)
     ShutdownLoadingScreen()
@@ -57,6 +64,7 @@ function _ped:spawn(coords, heading)
     Logger:debug('LocalPlayer::ped', self.ped)
 
     self:setClothes(1, 0, 0, 2)
+    self:startGame()
 
     while not HasPedHeadBlendFinished(PlayerPedId()) or not DoesEntityExist(PlayerPedId()) do
         Wait(0)
