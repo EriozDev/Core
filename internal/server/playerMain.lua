@@ -119,5 +119,3 @@ AddEventHandler('onResourceStop', function(_RESOURCE)
         end
     end
 end)
-
-
