@@ -19,6 +19,7 @@ shared_scripts {
 }
 
 client_scripts {
+    'internal/DEBUG/clientMain.lua',
     'internal/client/ped.lua',
     'internal/client/client.lua',
     'internal/client/LocalPlayer.lua',
