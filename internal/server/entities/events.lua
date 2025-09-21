@@ -10,12 +10,12 @@ AddEventHandler('entityCreating', function(entity)
     local model = GetEntityModel(entity)
 
     local ent = Entities.New(netId, owner, model)
-    Logger:debug(
-        'Nouvelle entité trackée',
-        'NetID:', ent:GetNetId(),
-        'Owner:', ent:GetOwner(),
-        'Model:', ent:GetModel()
-    )
+    --Logger:debug(
+    --    'Nouvelle entité trackée',
+    --    'NetID:', ent:GetNetId(),
+    --    'Owner:', ent:GetOwner(),
+    --    'Model:', ent:GetModel()
+    --)
 end)
 
 AddEventHandler('entityRemoved', function(entity)

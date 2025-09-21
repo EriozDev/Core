@@ -3,6 +3,17 @@ local mainTread = Thread.New('mainThread', function(self)
     eventsManager:toServer('playerConnect')
 end)
 
+CreateThread(function()
+    while true do
+        Wait(1000)
+
+        local playerId = PlayerId()
+        SetCanAttackFriendly(PlayerPedId(), true, true)
+        NetworkSetFriendlyFireOption(true)
+    end
+end)
+
+
 RegisterNetEvent('playerJoin', function()
     _client.init()
     local client = _client.Get()
