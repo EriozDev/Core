@@ -39,7 +39,10 @@ end
 
 function _ped:setModel(model)
     RequestModel(model)
-    while not HasModelLoaded(model) do Logger:info('Model Loading..') Wait(0) end
+    while not HasModelLoaded(model) do
+        Logger:info('Model Loading..')
+        Wait(0)
+    end
 
     SetPlayerModel(PlayerId(), model)
     Logger:info('Model Loaded !')
@@ -80,7 +83,6 @@ function _ped:spawn(coords, heading)
     SetEntityHeading(ped, heading or 0.0)
 end
 
-
 function _ped:setClothes(componentId, drawableId, textureId, paletteId)
     if not self.ped or not DoesEntityExist(self.ped) then
         return false
@@ -97,7 +99,7 @@ function _ped:getClothes(componentId)
     local drawable = GetPedDrawableVariation(self.ped, componentId)
     local texture = GetPedTextureVariation(self.ped, componentId)
     local palette = GetPedPaletteVariation(self.ped, componentId)
-    return {drawable = drawable, texture = texture, palette = palette}
+    return { drawable = drawable, texture = texture, palette = palette }
 end
 
 function _ped:saveOutfit()
@@ -166,6 +168,5 @@ function _ped:setVisible(state, selfVisible)
 
     return true
 end
-
 
 return _ped
