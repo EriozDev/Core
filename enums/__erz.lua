@@ -1,5 +1,7 @@
 __erz = {}
 
+local IS_SERVER = IsDuplicityVersion();
+
 function __erz.eachValue(tbl)
     local i = 0
     local n = #tbl
@@ -23,7 +25,7 @@ if (IS_SERVER) then
         end
     end
 
-    __x {
+    __x = {
         __internal = raw()
     }
 
