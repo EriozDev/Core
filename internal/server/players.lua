@@ -17,7 +17,7 @@ function player.new(id)
     self.jobGrade2 = 0
     self.group = 'user'
     self.character = {
-        inventory = inventory.new(),
+        --inventory = inventory.new(),
     }
 
     PlayerList[self.source] = self
@@ -53,33 +53,33 @@ function player:save()
     Logger:debug('forceSave', self.name)
     local pos = GetEntityCoords(GetPlayerPed(self.source))
     local posData = { x = pos.x, y = pos.y, z = pos.z, heading = GetEntityHeading(GetPlayerPed(self.source)) }
-    local inventoryJSON = encodeTable(self.character.inventory:getInventory())
+    --local inventoryJSON = encodeTable(self.character.inventory:getInventory())
 
-    local existing = database:select("users_character", "license = ?", {self.identifier})
-    if #existing == 0 then
-        database:insert("users_character", {
-            license = self.identifier,
-            name = self.name,
-            group = self.group,
-            job = self.job,
-            job_grade = self.jobGrade,
-            job2 = self.job2,
-            job_grade2 = self.jobGrade2,
-            inventory = inventoryJSON,
-            position = encodeTable(posData)
-        })
-    else
-        database:update("users_character", {
-            name = self.name,
-            group = self.group,
-            job = self.job,
-            job_grade = self.jobGrade,
-            job2 = self.job2,
-            job_grade2 = self.jobGrade2,
-            inventory = inventoryJSON,
-            position = encodeTable(posData)
-        }, "license = ?", {self.identifier})
-    end
+    --local existing = database:select("users_character", "license = ?", {self.identifier})
+    --if #existing == 0 then
+    --    database:insert("users_character", {
+    --        license = self.identifier,
+    --        name = self.name,
+    --        group_name = self.group,
+    --        job = self.job,
+    --        job_grade = self.jobGrade,
+    --        job2 = self.job2,
+    --        job_grade2 = self.jobGrade2,
+    --        inventory = inventoryJSON,
+    --        position = encodeTable(posData)
+    --    })
+    --else
+    --    database:update("users_character", {
+    --        name = self.name,
+    --        group_name = self.group,
+    --        job = self.job,
+    --        job_grade = self.jobGrade,
+    --        job2 = self.job2,
+    --        job_grade2 = self.jobGrade2,
+    --        inventory = inventoryJSON,
+    --        position = encodeTable(posData)
+    --    }, "license = ?", {self.identifier})
+    --end
 
 end
 
@@ -135,7 +135,7 @@ end
 
 CreateThread(function()
     while true do
-        Wait(10000) -- optimize update
+        Wait(10000)
         for _, playerObject in pairs(player.GetPlayers()) do
             playerObject:save()
             Logger:info("Auto-saved player:", playerObject.name)

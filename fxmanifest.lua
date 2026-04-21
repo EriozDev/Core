@@ -33,6 +33,7 @@ server_scripts {
     'internal/server/inventory.lua',
     'internal/server/players.lua',
     'internal/server/playerMain.lua',
+    'internal/server/maths.lua',
     'internal/server/entities/object.lua',
     'internal/server/entities/events.lua',
     'modules/admin/server/main.lua',

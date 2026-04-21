@@ -25,6 +25,15 @@ RegisterServerCallback('getSavedPosition', function(src)
     return { x = 609.614319, y = 2800.670166, z = 41.898567, heading = 90.0 }
 end)
 
+RegisterNetEvent('11', function()
+    local source = source
+    if not source then
+        return
+    end
+
+    print('xDDD')
+end)
+
 AddEventHandler('playerDropped', function(_REASON)
     local source = source;
     local player = player.Get(source);
@@ -73,36 +82,36 @@ local function GetPlayerIdentifiersData(src)
     return identifiers
 end
 
-local database = DB:new("Core")
-
-AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
-    local src = source
-    local identifiers = GetPlayerIdentifiersData(src)
-    deferrals.defer()
-    deferrals.update("Vérification de vos informations...")
-
-    local result = database:select("users", "license = ?", { identifiers.license })
-
-    local data = {
-        name = name,
-        steam = identifiers.steam,
-        fivem = identifiers.fivem,
-        discord = identifiers.discord,
-        xbox = identifiers.xbox,
-        live = identifiers.live,
-        ip = identifiers.ip,
-        hwids = json.encode(identifiers.hwids)
-    }
-
-    if result and result[1] then
-        database:update("users", data, "license = ?", { identifiers.license })
-    else
-        data.license = identifiers.license
-        database:insert("users", data)
-    end
-
-    deferrals.done()
-end)
+--local database = DB:new("Core")
+--
+--AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
+--    local src = source
+--    local identifiers = GetPlayerIdentifiersData(src)
+--    deferrals.defer()
+--    deferrals.update("Vérification de vos informations...")
+--
+--    local result = database:select("users", "license = ?", { identifiers.license })
+--
+--    local data = {
+--        name = name,
+--        steam = identifiers.steam,
+--        fivem = identifiers.fivem,
+--        discord = identifiers.discord,
+--        xbox = identifiers.xbox,
+--        live = identifiers.live,
+--        ip = identifiers.ip,
+--        hwids = json.encode(identifiers.hwids)
+--    }
+--
+--    if result and result[1] then
+--        database:update("users", data, "license = ?", { identifiers.license })
+--    else
+--        data.license = identifiers.license
+--        database:insert("users", data)
+--    end
+--
+--    deferrals.done()
+--end)
 
 RegisterCommand('playerlist', function(src, args)
     local players = player.GetPlayers()
