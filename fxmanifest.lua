@@ -13,6 +13,7 @@ shared_scripts {
     'shared/libs/class.lua',
     'shared/libs/thread.lua',
     'shared/libs/logger.lua',
+    'shared/libs/cache.lua',
     'modules/events/triggers.lua',
     'modules/events/eventsManager.lua',
     'shared/libs/resources.lua'
